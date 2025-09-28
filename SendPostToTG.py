@@ -11,7 +11,7 @@ import TelegramUtils
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG
+    level=logging.WARN
 )
 
 load_dotenv()
@@ -47,9 +47,11 @@ def __create_caption(root_path: str, img_path: str, const_text: str):
 
 
 def job():
-    imgs = FileUtils.get_list_images(root_dir=ROOT_DIR)
-    for img in imgs:
+    # imgs = FileUtils.get_list_images(root_dir=ROOT_DIR)
+    for img in FileUtils.get_list_images(root_dir=ROOT_DIR):
+        print("Start work with: %s" %img)
         img_with_wm = FileUtils.add_watermark(ROOT_DIR, img, WATERMARK)
+        print("Add watermark: %s" %img_with_wm)
         try:
             asyncio.run(TelegramUtils.send_post(
                 bot_token=BOT_TOKEN,
@@ -60,7 +62,7 @@ def job():
             ))
             os.remove(img)
         except Exception as e:
-            print("Error, but need work. Error: %s" % e)
+            print("Error, but need work. Img: %s Error: %s" % (img, e))
             os.replace(img, img + ".error")
         finally:
             os.remove(img_with_wm)

@@ -8,15 +8,13 @@ from PIL import Image
 
 def get_list_images(root_dir: str):
     dirs = glob.glob(pathname=root_dir + "/**", recursive=True)
-    imgs = []
     for dir in dirs:
         low_dir = dir.lower()
         if (low_dir.endswith(".jpg")
                 | low_dir.endswith(".jpeg")
                 | low_dir.endswith(".png")
                 | low_dir.endswith(".bmp")):
-            imgs.append(dir)
-    return imgs
+            yield dir
 
 
 def add_watermark(temp_save_dir: str, image_path: str, watermark_path: str):
@@ -40,5 +38,6 @@ def add_watermark(temp_save_dir: str, image_path: str, watermark_path: str):
 
 
 def get_file_type(file: str):
+    """Return file type. `file.txt` --> `.txt`."""
     root, extension = os.path.splitext(file)
     return extension
