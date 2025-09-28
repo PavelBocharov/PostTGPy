@@ -21,7 +21,9 @@ def get_list_images(root_dir: str):
 
 def add_watermark(temp_save_dir: str, image_path: str, watermark_path: str):
     """ Document """
-    new_name = temp_save_dir + "/" + str(uuid.uuid4()) + get_file_type(image_path)
+    # new_name = temp_save_dir + "/" + str(uuid.uuid4()) + get_file_type(image_path)
+    # If add watermark to JPG, then so many artifacts.
+    new_name = temp_save_dir + "/" + str(uuid.uuid4()) + ".png"
     # load watermark
     wm = Image.open(watermark_path)
     wm_x, wm_y = wm.size
